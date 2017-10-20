@@ -1,3 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+/*invert
+transpose
+multiplication*/
+
+/*double **transposeMatrix(double** matrix, int rows, int columns){
+    int rc, cc, i, j;
+    double **mtx;
+    for(i = 0;i<rows;i++){
+    rc++;
+        for(j = 0; j<columns; j++){
+        cc++;
+        }
+    }
+    mtx = malloc(cc*sizeof(double *));
+    for(i = 0; i<cc; i++){
+        mtx[i]=malloc(rc*sizeof(double));
+        for(j = 0; j<rc;j++){
+        mtx[i][j]=matrix[i][j];
+        }
+    }
+    for(i=0; i<cc;i++){
+        for(j=0;j<rc;j++){
+        printf("%lf\t",mtx[j][i]);
+        }
+        printf("\t\n");
+    }
+    return mtx;
+}
+*/
 int main(int argc, char** argv){
     
     int rows,columns;
@@ -21,25 +54,23 @@ int main(int argc, char** argv){
 	printf("%d number of columns\n",columns);
 	fscanf(filepointer,"%d\n",&rows);
 	printf("%d number of rows\n",rows);
-	
-	
-        double **m1 = malloc(rows*sizeof(double *));
-        for(i = 0; i < rows; i++){
-            m1[i]=malloc(columns*sizeof(double));
-            for( j = 0; j<columns; j++){
-                fscanf(filepointer,"%lf, \n",&m1[i][j]);
-            }
-        }
-        for(i = 0; i<rows;i++){
-            for(j=0;j<columns;j++){
-                printf("%lf\t",m1[i][j]);
-            }
-            printf("\t\n");
-        }
-        printf("\ntranspose test");
+        printf("\ntranspose test\n");
         
-        
-     double **m1t = malloc(columns*sizeof(double *));
+     double **m1 = malloc(rows*sizeof(double *));
+    for(i = 0; i<rows;i++){
+        m1[i]=malloc(columns*sizeof(double));
+        for(j=0;j<columns;j++){
+          fscanf(filepointer,"%lf, \n",&m1[i][j]); 
+          }      
+    }
+    for(i = 0; i<rows;i++){
+        for(j=0; j<columns; j++){
+        printf("%lf\t",m1[i][j]);
+        }
+        printf("\t\n");
+    }   
+       //THIS IS GIVING ME SEGV DURING RUNTIME
+     /*double **m1t = malloc(columns*sizeof(double *));
       for(i = 0; i<columns;i++){
         m1t[i]=malloc(rows*sizeof(double));
         for(j=0;j<rows;j++){
@@ -51,10 +82,10 @@ int main(int argc, char** argv){
         printf("%lf\t",m1t[j][i]);
         }
         printf("\t\n");
-    }
+    }*/
     
     //this is the test matrix
-     filepointer = fopen(argv[2], "r");
+    filepointer = fopen(argv[2], "r");
     if (filepointer == NULL){
       printf("error\n");
       return 0;
@@ -86,6 +117,7 @@ int main(int argc, char** argv){
         fscanf(filepointer,"%lf, \n",&m2t[j][i]); 
                }
     }
+    
     for(i = 0; i<attribute;i++){
         for(j=0; j<rows; j++){
         printf("%lf\t",m2[j][i]);

@@ -39,6 +39,7 @@ void printMatrix(double **matrix, int r, int c ){
         }
         printf("\t\n");
     }   
+    printf("\n");
 }
 
 double **multiplyMatrix(double **m1, int r1, int c1, double **m2, int r2, int c2){
@@ -139,31 +140,38 @@ int main(int argc, char** argv){
     double **result = multiplyMatrix(mXt,columns, rows, mX, rows, columns);
     printf("\n");
     printMatrix(result, columns, columns);
+    
+    double **identity = malloc(columns*sizeof(double *));
+    for(i=0; i < columns; i++){
+    	identity[i]=malloc(rows*sizeof(double));
+    	for(j=0;j<columns;j++){
+    	if(i==j){
+    	identity[i][j]=1;
+    	}else{
+    	identity[i][j]=0;
+    	}
+    	}
+    }
+    printMatrix(identity,columns,columns);
 
     int m=0;
     int n=0;
-    int k = 1;
+   // int k = 1;
     double num;
     
     
-        if(result[m][n]!=1){
+        if(result[m][n]!=1 && identity[m][n]){
         num = result[m][n];
             for(n = 0; n<columns;n++){
                 result[m][n] = result[m][n]/num;
+                identity[m][n]=identity[m][n]/num;
                 printf("m = %d n = %d num = %lf\n",m,n,num);
-                 for(k=0;k<columns;k++){
-                    if(result[k][n]!=0){
-                    printf("k = %d\n",k);
-                    
-                    
-            }
-                }
-            
            }     
-                
+            //if(result[m][n] != 0); 
     }
     printf("\n\n");
     printMatrix(result,columns,columns);
+    printMatrix(identity,columns,columns);
     
 
     
@@ -227,3 +235,4 @@ int main(int argc, char** argv){
 
     return 0;
 }
+

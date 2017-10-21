@@ -31,6 +31,37 @@ multiplication*/
     return mtx;
 }
 */
+void printMatrix(double **matrix, int r, int c ){
+    int i,j;
+     for(i = 0; i<r;i++){
+        for(j=0; j<c; j++){
+        printf("%lf ",matrix[i][j]);
+        }
+        printf("\t\n");
+    }   
+}
+
+double **multiplyMatrix(double **m1, int r1, int c1, double **m2, int r2, int c2){
+    int i,j,k;
+    double total = 0;
+ 
+    double **result = malloc(r1*sizeof(double*));
+    for(i = 0; i < r1; i++){
+        result[i] = malloc(c2*sizeof(double));
+    }
+    
+    for(i=0;i<r1;i++){
+        for(j = 0; j<c2;j++){
+            for(k=0;k<r2;k++){
+            total = total + m1[i][k] * m2[k][j];
+            }
+            result[i][j]=total;
+            total = 0;
+        }
+    }
+    return result;
+}
+
 int main(int argc, char** argv){
     
     int rows,columns;
@@ -64,12 +95,7 @@ int main(int argc, char** argv){
           fscanf(filepointer,"%lf, \n",&m1[i][j]); 
           }      
     }
-   for(i = 0; i<rows;i++){
-        for(j=0; j<columns; j++){
-        printf("%lf\t",m1[i][j]);
-        }
-        printf("\t\n");
-    }   
+   // printMatrix(m1,rows,columns);   
     
     printf("rows = %d\n",columns);
 	printf("columns = %d\n",rows);
@@ -82,13 +108,7 @@ int main(int argc, char** argv){
                }
     }
     
-    for(i = 0; i<columns;i++){
-        for(j=0; j<rows; j++){
-        printf("%lf\t",m1t[i][j]);
-        }
-        printf("\t\n");
-    }   
-    
+  // printMatrix(m1t,columns,rows);
     
     printf("\nThis is Train Matrix with first column of 1s\n");
    
@@ -103,13 +123,7 @@ int main(int argc, char** argv){
         }
         }
     }
-    for(i = 0; i<rows;i++){
-        for(j=0; j<columns; j++){
-        printf("%lf\t",mX[i][j]);
-        }
-        printf("\t\n");
-    }   
-    
+    //printMatrix(mX,rows,columns);
  
     printf("\nThis is TRANSPOSE of COLUMNS OF 1 TRAIN MATRIX\n");
     double **mXt = malloc(columns*sizeof(double *));
@@ -119,58 +133,44 @@ int main(int argc, char** argv){
          mXt[i][j] = mX[j][i];
         }
         }
-  
+
+   // printMatrix(mXt,columns,rows);
+    printf("This is XT * X\n");
+    double **result = multiplyMatrix(mXt,columns, rows, mX, rows, columns);
+    printf("\n");
+    printMatrix(result, columns, columns);
     
-    for(i = 0; i<columns;i++){
-        for(j=0; j<rows; j++){
-        printf("%lf\t",mXt[i][j]);
-        }
-        printf("\t\n");
-    }   
-    
-    printf("\nThis is original TEST MATRIX\n");
      
      
     //this is the test matrix
     filepointer = fopen(argv[2], "r");
+    int testrow;
     if (filepointer == NULL){
       printf("error\n");
       return 0;
     }
-    fscanf(filepointer,"%d\n",&rows);
-    printf("%d number of rows\n",rows);
+    fscanf(filepointer,"%d\n",&testrow);
+    printf("\n number of rows = %d\n",testrow);
     
-    
-    double **m2 = malloc(rows*sizeof(double *));
-    for(i = 0; i<rows;i++){
+    printf("\nThis is original TEST MATRIX\n");
+    double **m2 = malloc(testrow*sizeof(double *));
+    for(i = 0; i<testrow;i++){
         m2[i]=malloc(attribute*sizeof(double));
         for(j=0;j<attribute;j++){
         fscanf(filepointer,"%lf, \n",&m2[i][j]); 
                }
     }
-    for(i = 0; i<rows;i++){
-        for(j=0; j<attribute; j++){
-        printf("%lf\t",m2[i][j]);
-        }
-        printf("\t\n");
-    }
+    printMatrix(m2,testrow,attribute);
    
    printf("\n");
    double **m2t = malloc(attribute*sizeof(double *));
     for(i = 0; i<attribute;i++){
-        m2t[i]=malloc(rows*sizeof(double));
-        for(j=0;j<rows;j++){
+        m2t[i]=malloc(testrow*sizeof(double));
+        for(j=0;j<testrow;j++){
         m2t[i][j] = m2[j][i]; 
                }
     }
-    
-    for(i = 0; i<attribute;i++){
-        for(j=0; j<rows; j++){
-        printf("%lf\t",m2[j][i]);
-        }
-        printf("\t\n");
-    }
-    
+    printMatrix(m2t, attribute, testrow);
     
     printf("\ntranspose\n");
     //transpose test
